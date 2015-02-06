@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h1 SHITTER Login
+    form(name= 'LOG IN TO TWITER OR SUFFER THE CONSEQUENCES', action='/login', method='post')
+        .form-group
+            label(for= 'user_name') Enter your user name:
+            input.form-control(type= 'text' name= 'username')
+        .form-group
+            label(for= 'password') Enter your password: 
+            input.form-control(type= 'text' name= 'password')
+        button.btn.btn-default(type='submit') Submit
+        
+  p Don't have an account? Tough
+  a(href='https://localhost:4000') CLICK HERE OR SUFFER THE CONSEQUENCES 

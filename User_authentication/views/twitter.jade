@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1.centered SHITTER
+  h2.centered Shitty opionions from uneducated people 
+  h3.centered 
+  form(action='/', method= 'post')
+    .form-group
+      textarea.form-control(rows= '3', type='text', name='post')
+      button.btn.btn-default(type='submit') Submit
+
