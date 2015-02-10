@@ -1,50 +1,36 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'update', '-g', 'gopdx' ]
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
 2 info using npm@2.1.14
 3 info using node@v0.10.35
 4 verbose node symlink /usr/local/bin/node
-5 silly mapToRegistry name gopdx
-6 silly mapToRegistry using default registry
-7 silly mapToRegistry registry https://registry.npmjs.org/
-8 silly mapToRegistry uri https://registry.npmjs.org/gopdx
-9 verbose request uri https://registry.npmjs.org/gopdx
-10 verbose request no auth needed
-11 info attempt registry request try #1 at 19:02:31
-12 verbose request id f7cc19df11de074b
-13 verbose etag "CPTUKSZPLKIQGPFO7EF8KGLS1"
-14 http request GET https://registry.npmjs.org/gopdx
-15 http 304 https://registry.npmjs.org/gopdx
-16 silly get cb [ 304,
-16 silly get   { date: 'Fri, 06 Feb 2015 03:02:31 GMT',
-16 silly get     server: 'Apache',
-16 silly get     via: '1.1 varnish',
-16 silly get     'last-modified': 'Fri, 06 Feb 2015 03:02:31 GMT',
-16 silly get     'cache-control': 'max-age=60',
-16 silly get     etag: '"CPTUKSZPLKIQGPFO7EF8KGLS1"',
-16 silly get     age: '56',
-16 silly get     'x-served-by': 'cache-sjc3128-SJC',
-16 silly get     'x-cache': 'HIT',
-16 silly get     'x-cache-hits': '1',
-16 silly get     'x-timer': 'S1423191751.619121,VS0,VE0',
-16 silly get     vary: 'Accept',
-16 silly get     'content-length': '0',
-16 silly get     'keep-alive': 'timeout=10, max=50',
-16 silly get     connection: 'Keep-Alive' } ]
-17 verbose etag https://registry.npmjs.org/gopdx from cache
-18 verbose type called_on_non_object
-19 verbose stack TypeError: Object.keys called on non-object
-19 verbose stack     at Function.keys (native)
-19 verbose stack     at unmarkExtraneous (/usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:362:10)
-19 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:137:5
-19 verbose stack     at next (/usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:185:14)
-19 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:169:14
-19 verbose stack     at Object.oncomplete (evalmachine.<anonymous>:108:15)
-20 verbose cwd /Users/michaelmontero/Desktop/PCS/week3/Server/User_authentication
-21 error Darwin 14.1.0
-22 error argv "node" "/usr/local/bin/npm" "update" "-g" "gopdx"
-23 error node v0.10.35
-24 error npm  v2.1.14
-25 error Object.keys called on non-object
-26 error If you need help, you may report this error at:
-26 error     <http://github.com/npm/npm/issues>
-27 verbose exit [ 1, true ]
+5 verbose run-script [ 'prestart', 'start', 'poststart' ]
+6 info prestart User_authentication@0.0.0
+7 info start User_authentication@0.0.0
+8 verbose unsafe-perm in lifecycle true
+9 info User_authentication@0.0.0 Failed to exec start script
+10 verbose stack Error: User_authentication@0.0.0 start: `node ./bin/www`
+10 verbose stack Exit status 8
+10 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:212:16)
+10 verbose stack     at EventEmitter.emit (events.js:98:17)
+10 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:14:12)
+10 verbose stack     at ChildProcess.emit (events.js:98:17)
+10 verbose stack     at maybeClose (child_process.js:766:16)
+10 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:833:5)
+11 verbose pkgid User_authentication@0.0.0
+12 verbose cwd /Users/michaelmontero/Desktop/PCS/week3/Server/Twitter_alternative/User_authentication
+13 error Darwin 14.1.0
+14 error argv "node" "/usr/local/bin/npm" "start"
+15 error node v0.10.35
+16 error npm  v2.1.14
+17 error code ELIFECYCLE
+18 error User_authentication@0.0.0 start: `node ./bin/www`
+18 error Exit status 8
+19 error Failed at the User_authentication@0.0.0 start script 'node ./bin/www'.
+19 error This is most likely a problem with the User_authentication package,
+19 error not with npm itself.
+19 error Tell the author that this fails on your system:
+19 error     node ./bin/www
+19 error You can get their info via:
+19 error     npm owner ls User_authentication
+19 error There is likely additional logging output above.
+20 verbose exit [ 1, true ]

@@ -2,10 +2,18 @@ extends layout
 
 block content
   h1.centered SHITTER
-  h2.centered Shitty opionions from uneducated people 
+  h2.centered Shitty opinions from uneducated people 
   h3.centered 
-  form(action='/', method= 'post')
+
+  form(action='/twitter', method= 'post')
     .form-group
-      textarea.form-control(rows= '3', type='text', name='post')
+      input(style='display: none', value=userid, name='userid')
+      textarea.form-control(rows= '3', type='text', name='content')
       button.btn.btn-default(type='submit') Submit
+  
+  ul
+    each post in posts
+      li= post.attributes.content
+
+
 

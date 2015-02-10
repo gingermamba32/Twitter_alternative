@@ -1,8 +1,13 @@
+var promise = require('bluebird')
+
 var express = require('express');
 var router = express.Router();
-var knex = require('knex');
+var cookie = require('cookie-parser');
+
+
 var pg = require('pg');
 var passport = require('passport');
+
 //var db = require('../db');
 
 var env = process.env.NODE_ENV || 'development';
@@ -10,6 +15,8 @@ var knexConfig = require('../knexfile.js')[env];
 var knex = require('knex')(knexConfig);
 var bookshelf = require('bookshelf')(knex);
 
+// var redis = require("redis"),
+//     client = redis.createClient();
 
 
 
@@ -17,52 +24,158 @@ var bookshelf = require('bookshelf')(knex);
  var User = bookshelf.Model.extend({
   tableName: 'users'
 });
+var Post = bookshelf.Model.extend({
+    tableName: 'posts'
+ });
 
- var Tweet = bookshelf.Model.extend({
-  tableName: 'posts'
+ var Posts = bookshelf.Collection.extend({
+  model: Post,
+  userNames: function(){
+  	this.belongsTo(User);
+  }
 });
+ 
 
 
 
-/* GET signin page. */
+/* render login page. */
 //route directly to the login page when the app loads
-router.get('/', function(req, res, next){
-	res.render('login', {title: 'Express'});
+router.get('/', function(req, res, next) {
+      //check for cookie and redirct to either twitter.jade or login.jade
+      
+    if(req.cookies.username) {
+        new User({username: req.cookies.username})
+        .fetch()
+        .then(function(model){
+            if(model !== null) {
+                res.redirect('/twitter'); 
+   
+            } else {
+                res.redirect('/login');
+            }
+
+        });
+
+        //use cookie.value go to db grab their
+        //minions, followers,feed, etc
+        //get minion obj, overlord obj, twits obj
+    } else {
+      res.render('login', { title: 'Express' });
+    }
 });
 
+
+//render the index page used to store peoples info in the signup process
+router.get('/index', function(req, res, next) {
+
+    res.render('index')
+
+});
+
+
+//*********check if valid userID exists before proceeding to the twitter page********// 
 router.post('/login', function(req, res, next){
 	//in the login file check to see if the username exists and is valid
-	//If you wish to trigger an error if the fetched model is not found, pass {require: true} as one of the options to the fetch call.
+	//var newusers [];
+	
 	var validUserName = function() {
 
 		//bookshelf fetch
-		new User({username: req.body.username, password: req.body.password}).fetch().then(function(model){
-			 if(model) {
-                    res.cookie('username',req.body.username); 
+		new User({username: req.body.username})
+            .fetch()
+            .then(function(model){
+            if(model !== null) {
+                if(model.attributes.password === req.body.password) {
+                    res.cookie('username',req.body.username);  
                     res.cookie('password',req.body.password);
-                    res.render('twitter'); 
+                    res.cookie('id', model.attributes.id);
+
+                    res.redirect('/twitter'); 
+                } else {
+                    console.log('your password literally doesnot exist').done();
+
                 } 
-                //
-               else {
-               	res.cookie("username", req.body.username);
-				res.cookie("username", req.body.password);
+            } else {
+                console.log('You literally do not exist');
+            }               
+        });
+    }
+        
 
-				User.forge({ username: req.body.username, password: req.body.password}).save().then(function(user) {
-  				console.log('created a user %j', user.toJSON());
-				});
+        validUserName(); 
 
-
-					res.render('twitter');
-               } 
-
-		})	
-	}
-	validUserName();
- 
-    //bookshelf command to check database for password
-    //if match, render homepage
-    //if not, throw error
+    res.render('index');
 });
+
+
+
+//****************SIGNUP page*********************
+//run a router.post on signup.jade...same interface as the login page just easier to apply this way
+router.post('/index',function(req,res,next){
+
+    res.cookie('username',req.body.username); 
+    res.cookie('password',req.body.password);
+
+    User.forge({ username: req.body.username, password:req.body.password }).save().then(function(user) {
+        console.log('user added %j',user);
+    });
+
+    res.render('twitter');
+});
+
+//************run router.get on the twitter to gather and print out the data of the posts table************//
+router.post('/twitter', function(req, res, next){
+
+    Post.forge({ content: req.body.content, userid: req.body.userid}).save().then(function(post) {
+        console.log('post added %j',post);
+    });
+
+    res.redirect('/twitter');
+})
+
+
+
+router.get('/twitter',function(req,res,next){
+
+    // var newUserId = parseInt(req.cookies.id);
+
+    // knex.select('*').from('posts').where()
+
+
+
+
+    
+    //var newUserId = parseInt(req.cookies.id);
+            
+            new User({username: req.cookies.username})
+                .fetch()
+                .then(function(model){
+                   var userid = model.attributes.id;
+                   console.log(userid);
+
+                new Posts()
+                   .query('where', 'userid', '=', userid)
+                   .fetch()
+                   .then(function(data){
+                        
+                        var posts = data;
+                        console.log(posts);
+                         
+                        res.render('twitter', {username: req.cookies.username, posts: posts.models, userid: userid})
+                   });
+               });
+                    
+    });
+
+
+
+
+
+
+
+
+
+
 
 
 // router.get('/', function(req, res, next) {
@@ -94,17 +207,21 @@ router.post('/login', function(req, res, next){
 // });
 
 //use router.post to store the contents of the twitter submit within the database
-router.post('/twitter', function(req, res, next) {
-	Tweet.forge({ text: req.body.post, user_id: req.body.username}).save().then(function(user) {
-  	console.log('created a user %j', user.toJSON());
-	});
+// router.post('/twitter', function(req, res, next) {
+// 	Contents.forge({ content: req.body.content, username: req.cookie.username}).save().then(function(text) {
+//   	console.log('created a content %j', text.toJSON());
+// 	});
+// 	res.render('/twitter');
+// });
 
 
-// router.post('/', function(req, res, next) {
+
+
+// router.post('/twitter', function(req, res, next) {
 // 	res.cookie("indusername", req.body.username);
 // 	res.cookie("induserpassword", req.body.password);
 
-// 	User.forge({ username: req.body.username, password: req.body.password}).save().then(function(user) {
+	// User.forge({ username: req.body.username, password: req.body.password}).save().then(function(user) {
 //   	console.log('created a user %j', user.toJSON());
 // 	});
 

@@ -1,15 +1,18 @@
 extends layout
 
 block content
-  h1 MicroBlog
-  form(action='/', method= 'post')
-    .form-group
-        label(for='username') UserName     
-        input.form-control(type='text', name= 'username', placeholder='Enter UserName',)  
-    .form-group
-      label(for= 'password') Password    
-      input.form-control(type='password', name= 'password', placeholder='Enter Password')  
-    button.btn.btn-default(type='submit') Submit
+    h1 SHITTER SignUp
+    form(action='/index', method='post')
+        .form-group
+            label(for= 'username') Enter your user name:
+            input.form-control(type= 'text' name= 'username')
+        .form-group
+            label(for= 'password') Enter your password: 
+            input.form-control(type= 'text' name= 'password')
+        button.btn.btn-default(type='submit') Submit
+        
+    p Shit outta luck
+    a(href='https://localhost:4000') click here
 
 
   
