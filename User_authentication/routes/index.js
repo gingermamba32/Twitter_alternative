@@ -96,15 +96,13 @@ router.post('/login', function(req, res, next){
 
                 } 
             } else {
-                console.log('You literally do not exist');
+                res.redirect('/index');
             }               
         });
     }
         
 
-        validUserName(); 
-
-    res.render('index');
+    validUserName(); 
 });
 
 
@@ -118,9 +116,10 @@ router.post('/index',function(req,res,next){
 
     User.forge({ username: req.body.username, password:req.body.password }).save().then(function(user) {
         console.log('user added %j',user);
+        res.render('twitter');
     });
 
-    res.render('twitter');
+    
 });
 
 //************run router.get on the twitter to gather and print out the data of the posts table************//
@@ -128,9 +127,10 @@ router.post('/twitter', function(req, res, next){
 
     Post.forge({ content: req.body.content, userid: req.body.userid}).save().then(function(post) {
         console.log('post added %j',post);
+        res.redirect('/twitter');
     });
 
-    res.redirect('/twitter');
+    
 })
 
 
