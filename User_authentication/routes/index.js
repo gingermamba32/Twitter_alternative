@@ -92,7 +92,7 @@ router.post('/login', function(req, res, next){
 
                     res.redirect('/twitter'); 
                 } else {
-                    console.log('your password literally doesnot exist').done();
+                    console.log('your password literally does not exist').done();
 
                 } 
             } else {
